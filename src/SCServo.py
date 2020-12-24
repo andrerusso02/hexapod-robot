@@ -1,4 +1,5 @@
 import time
+import serial
 
 import util
 from math import pi
@@ -64,6 +65,8 @@ maxPos10b = [58, 113, 55, 1, 144, 30, 108, 89, 64, 972, 944, 910, 1002, 932, 953
 
 ser = serial.Serial('/dev/serial0', 1000000)
 
+byteOrder = 'little'
+
 
 def enableTorque(idServo):
     global ser
@@ -71,14 +74,14 @@ def enableTorque(idServo):
     enableT = 1
     messageLength = 4
 
-    ser.write(startByte)
-    ser.write(startByte)
-    ser.write(idServo)
-    ser.write(messageLength)
-    ser.write(INST_WRITE)
-    ser.write(P_TORQUE_ENABLE)
-    ser.write(enableT)
-    ser.write((~(idServo + messageLength + INST_WRITE + enableT + P_TORQUE_ENABLE)) & 0xFF)
+    ser.write(startByte.to_bytes(1, byteOrder))
+    ser.write(startByte.to_bytes(1, byteOrder))
+    ser.write(idServo.to_bytes(1, byteOrder))
+    ser.write(messageLength.to_bytes(1, byteOrder))
+    ser.write(INST_WRITE.to_bytes(1, byteOrder))
+    ser.write(P_TORQUE_ENABLE.to_bytes(1, byteOrder))
+    ser.write(enableT.to_bytes(1, byteOrder))
+    ser.write(((~(idServo + messageLength + INST_WRITE + enableT + P_TORQUE_ENABLE)) & 0xFF).to_bytes(1, byteOrder))
 
 
 def writePos(idServo, posRad, timeSec):
@@ -90,17 +93,17 @@ def writePos(idServo, posRad, timeSec):
     posH, posL = angle10b.to_bytes(2, 'little')
     timH, timL = timeMilis.to_bytes(2, 'little')
 
-    ser.write(startByte)
-    ser.write(startByte)
-    ser.write(idServo)
-    ser.write(messageLength)
-    ser.write(INST_WRITE)
-    ser.write(P_GOAL_POSITION_L)
-    ser.write(posL)
-    ser.write(posH)
-    ser.write(timL)
-    ser.write(timH)
-    ser.write((~(idServo + messageLength + INST_WRITE + P_GOAL_POSITION_L + posL + posH + timL + timH)) & 0xFF)
+    ser.write(startByte.to_bytes(1, byteOrder))
+    ser.write(startByte.to_bytes(1, byteOrder))
+    ser.write(idServo.to_bytes(1, byteOrder))
+    ser.write(messageLength.to_bytes(1, byteOrder))
+    ser.write(INST_WRITE.to_bytes(1, byteOrder))
+    ser.write(P_GOAL_POSITION_L.to_bytes(1, byteOrder))
+    ser.write(posL.to_bytes(1, byteOrder))
+    ser.write(posH.to_bytes(1, byteOrder))
+    ser.write(timL.to_bytes(1, byteOrder))
+    ser.write(timH.to_bytes(1, byteOrder))
+    ser.write(((~(idServo + messageLength + INST_WRITE + P_GOAL_POSITION_L + posL + posH + timL + timH)) & 0xFF).to_bytes(1, byteOrder))
 
 
 for idServo in range(1, 19):
