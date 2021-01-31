@@ -24,6 +24,9 @@ class c_leg:
         self.z_offset = z_offset
         self.put_down = False
         self.button = sensors.push_button(pin_button)
+        SCServo.enableTorque(ids_list[0])
+        SCServo.enableTorque(ids_list[1])
+        SCServo.enableTorque(ids_list[2])
 
     """fl = from leg"""
 
@@ -76,7 +79,7 @@ class c_leg:
             b = acos((l3 ** 2 - l2 ** 2 - beta ** 2) / (-2 * l2 * sqrt(z ** 2 + (l - l1) ** 2))) + asin((l - l1) / beta)
             c = acos((z ** 2 + (l - l1) ** 2 - l2 ** 2 - l3 ** 2) / (-2 * l2 * l3))
             SCServo.writePos(self.ids_list[0], a, delay_sec)
-            SCServo.writePos(self.ids_list[1], a, delay_sec)
-            SCServo.writePos(self.ids_list[2], a, delay_sec)
+            SCServo.writePos(self.ids_list[1], b, delay_sec)
+            SCServo.writePos(self.ids_list[2], c, delay_sec)
 
             #graphic.print_point(self)

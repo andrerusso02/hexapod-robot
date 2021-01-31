@@ -1,14 +1,17 @@
-#import SCServo
-#import time
+import SCServo
+import time
 
+moteurs = [3, 6]
 
-"""while 1:
-    SCServo.writePos(1, 0.5, 1)
-    time.sleep(2)
+for i in moteurs:
+    SCServo.enableTorque(i)
 
-    SCServo.writePos(1, 1, 1)
-    time.sleep(2)"""
+t = 1
 
-a, b = [2, 3]
-print(a)
-print(b)
+while True:
+    for i in moteurs:
+        SCServo.writePos(i, 0.5, t)
+    time.sleep(t)
+    for i in moteurs:
+        SCServo.writePos(i, 1.5, t)
+    time.sleep(t)

@@ -63,7 +63,7 @@ INST_SYNC_WRITE = 0x83
 minPos10b = [932, 987, 929, 875, 1018, 904, 982, 963, 938, 98, 70, 36, 128, 58, 79, 93, 33, 96]
 maxPos10b = [58, 113, 55, 1, 144, 30, 108, 89, 64, 972, 944, 910, 1002, 932, 953, 967, 907, 970]
 
-ser = serial.Serial('/dev/serial0', 1000000)
+ser = serial.Serial('/dev/ttyAMA1', 1000000)
 
 byteOrder = 'little'
 
@@ -104,14 +104,4 @@ def writePos(idServo, posRad, timeSec):
     ser.write(timL.to_bytes(1, byteOrder))
     ser.write(timH.to_bytes(1, byteOrder))
     ser.write(((~(idServo + messageLength + INST_WRITE + P_GOAL_POSITION_L + posL + posH + timL + timH)) & 0xFF).to_bytes(1, byteOrder))
-
-
-for idServo in range(1, 19):
-    enableTorque(idServo)
-
-print("torque enabled")
-
-writePos(3, 0.6, 1)
-time.sleep(2)
-writePos(3, 0.8, 1)
-time.sleep(2)
+    time.sleep(0.0005)
