@@ -87,7 +87,6 @@ def walk_straight(all_legs_list, dir_angle_deg, ground_detection):
     for leg in legs_down_list:
         leg.back_to_current_pos()
     if not inside:
-        print("repositionnement")
         # Passer d'un cas à l'autre (l à r ou inverse)
         # Poser les pattes levées, elles sont forcément à la bonne position.
         legs_put_down(legs_up_list, all_legs_list, ground_detection)
@@ -143,7 +142,6 @@ def turn(all_legs_list, direction, ground_detection):
     for leg in legs_down_list:
         leg.back_to_current_pos()
     if not inside:
-        print("repositionnement")
         # Passer d'un cas à l'autre (l à r ou inverse)
         # Poser les pattes levées, elles sont forcément à la bonne position.
         legs_put_down(legs_up_list, all_legs_list, ground_detection)
@@ -202,3 +200,10 @@ def demo(all_leg_list):
     legs_rotate('z', all_leg_list, -30, sim=False)
     legs_rotate('z', all_leg_list, 15, sim=False)
     legs_move_z(all_leg_list, 3)
+
+
+def are_all_legs_put_down(all_leg_list):
+    for leg in all_leg_list:
+        if not leg.put_down:
+            return False
+    return True
